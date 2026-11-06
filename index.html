@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="author" content="Sergio Andrés Caro Arrieta">
+<meta name="description" content="TecnoPensantes: recurso educativo digital de Tecnología e Informática para grado 10°. Maestría en Recursos Digitales Aplicados a la Educación, Universidad de Cartagena.">
+<title>TecnoPensantes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+html{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+/* Layout: cuaderno cuadriculado de clase. Cabecera con el problema, ruta de 4 misiones y una misión a la vez. */
+:root {
+  --paper: #f5f7fb;
+  --sheet: #ffffff;
+  --grid: rgba(31, 69, 184, 0.07);
+  --ink: #16214a;
+  --ink-soft: #4a5578;
+  --line: #d5dbea;
+  --pen: #1f45b8;
+  --pen-soft: #e6ecfb;
+  --marker: #ffd36b;
+  --ok: #0f6e45;
+  --ok-bg: #e3f4ec;
+  --bad: #b42318;
+  --bad-bg: #fdecea;
+  --blk-evento: #ffd65c;
+  --blk-control: #ffb870;
+  --blk-variable: #ff9d7a;
+  --blk-apariencia: #cdb8ff;
+  --blk-ink: #1d1a14;
+  --f-display: "Bricolage Grotesque", "Arial Rounded MT Bold", "Segoe UI", sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Verdana", "Segoe UI", sans-serif;
+  --f-code: "JetBrains Mono", "Consolas", "Courier New", monospace;
+  --scale: 1;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1529; --sheet: #172040; --grid: rgba(143, 176, 255, 0.07);
+    --ink: #e8ecf8; --ink-soft: #a9b3d1; --line: #2c3866;
+    --pen: #9db8ff; --pen-soft: #22305e; --marker: #ffcf5c;
+    --ok: #5fd39b; --ok-bg: #133a2c; --bad: #ff9486; --bad-bg: #42201d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1529; --sheet: #172040; --grid: rgba(143, 176, 255, 0.07);
+  --ink: #e8ecf8; --ink-soft: #a9b3d1; --line: #2c3866;
+  --pen: #9db8ff; --pen-soft: #22305e; --marker: #ffcf5c;
+  --ok: #5fd39b; --ok-bg: #133a2c; --bad: #ff9486; --bad-bg: #42201d;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background-color: var(--paper);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 22px 22px;
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: calc(17px * var(--scale));
+  line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 48px;
+}
+.wrap { max-width: 980px; margin: 0 auto; display: grid; gap: 28px; }
+a { color: var(--pen); }
+:focus-visible { outline: 3px solid var(--pen); outline-offset: 2px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.15; margin: 0; }
+p { margin: 0; }
+.eyebrow { font-size: 0.78em; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
+
+/* Barra superior */
+.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand svg { width: 44px; height: 44px; flex: none; }
+.brand-name { font-family: var(--f-display); font-weight: 800; font-size: 1.5em; letter-spacing: -0.01em; }
+.brand-sub { font-size: 0.85em; color: var(--ink-soft); }
+.tools { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.btn {
+  font: inherit; font-weight: 700; font-size: 0.92em; cursor: pointer;
+  border: 2px solid var(--pen); color: var(--pen); background: var(--sheet);
+  padding: 8px 14px; border-radius: 10px; min-height: 44px;
+}
+.btn:hover { background: var(--pen-soft); }
+.btn.primary { background: var(--pen); color: var(--sheet); }
+.btn.primary:hover { filter: brightness(1.1); }
+.btn.small { padding: 4px 10px; min-height: 36px; font-size: 0.85em; }
+.btn.icon { min-width: 40px; padding: 4px 8px; }
+
+/* Problema */
+.problem { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: center; }
+.problem h1 { font-size: clamp(2em, 5vw, 3.1em); letter-spacing: -0.02em; font-weight: 800; }
+.problem h1 mark { background: linear-gradient(transparent 55%, var(--marker) 55%); color: inherit; padding: 0 2px; }
+.problem .lead { margin-top: 12px; font-size: 1.08em; max-width: 60ch; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.fact { font-family: var(--f-code); font-size: 0.8em; border: 1px dashed var(--ink-soft); border-radius: 6px; padding: 3px 8px; color: var(--ink-soft); }
+.screen-card { background: var(--sheet); border: 2px solid var(--ink); border-radius: 14px; padding: 16px; box-shadow: 6px 6px 0 var(--pen-soft); }
+.screen-card svg { width: 100%; height: auto; display: block; }
+
+/* Ruta de misiones */
+.route { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; list-style: none; padding: 0; margin: 0; }
+.route a {
+  display: grid; gap: 2px; text-decoration: none; color: var(--ink); height: 100%;
+  background: var(--sheet); border: 2px solid var(--line); border-radius: 12px; padding: 10px 12px;
+}
+.route a:hover { border-color: var(--pen); }
+.route a[aria-current="step"] { border-color: var(--pen); box-shadow: inset 0 -4px 0 var(--pen); }
+.route .num { font-family: var(--f-code); font-size: 0.78em; color: var(--ink-soft); }
+.route .name { font-weight: 700; line-height: 1.25; }
+.pill { justify-self: start; font-size: 0.72em; font-weight: 700; border-radius: 99px; padding: 1px 9px; margin-top: 4px; background: var(--paper); color: var(--ink-soft); border: 1px solid var(--line); }
+.pill.doing { background: var(--pen-soft); color: var(--pen); border-color: transparent; }
+.pill.done { background: var(--ok-bg); color: var(--ok); border-color: transparent; }
+
+/* Misión */
+.mission { background: var(--sheet); border: 2px solid var(--ink); border-radius: 18px; padding: clamp(18px, 4vw, 34px); display: grid; gap: 26px; min-width: 0; }
+.m-head { display: grid; gap: 8px; }
+.m-head h2 { font-size: clamp(1.6em, 3.6vw, 2.2em); font-weight: 800; }
+.goal { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; background: var(--pen-soft); border-radius: 12px; padding: 14px 16px; }
+.goal dt { font-weight: 700; color: var(--pen); }
+.goal dd { margin: 0; min-width: 0; }
+.steps { margin: 0; padding-left: 1.4em; display: grid; gap: 6px; }
+.section-title { font-family: var(--f-display); font-weight: 800; font-size: 1.25em; display: flex; align-items: baseline; gap: 10px; }
+.section-title small { font-family: var(--f-body); font-weight: 400; font-size: 0.7em; color: var(--ink-soft); }
+.block { display: grid; gap: 14px; min-width: 0; }
+
+/* Clasificación */
+.classify { display: grid; gap: 8px; }
+.cls-row { display: grid; grid-template-columns: 1fr 190px; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; }
+.cls-row.good { border-color: var(--ok); background: var(--ok-bg); }
+.cls-row.wrong { border-color: var(--bad); background: var(--bad-bg); }
+.cls-row .why { grid-column: 1 / -1; font-size: 0.9em; }
+select { font: inherit; padding: 8px; border-radius: 8px; border: 2px solid var(--ink-soft); background: var(--sheet); color: var(--ink); min-height: 44px; width: 100%; }
+
+/* Ordenar */
+.order { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; counter-reset: paso; }
+.order li { display: grid; grid-template-columns: 2.2em 1fr auto; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: var(--sheet); }
+.order li::before { counter-increment: paso; content: counter(paso); font-family: var(--f-code); font-weight: 500; text-align: center; color: var(--pen); }
+.order li.good { border-color: var(--ok); background: var(--ok-bg); }
+.order li.wrong { border-color: var(--bad); background: var(--bad-bg); }
+.order .ctl { display: flex; gap: 4px; }
+
+/* Bloques */
+.editor { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 18px; }
+.panel { border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.panel h3 { font-size: 1em; font-family: var(--f-body); font-weight: 700; }
+.blk {
+  font-family: var(--f-code); font-size: 0.88em; color: var(--blk-ink);
+  border-radius: 8px; padding: 8px 10px; border: 1px solid rgba(0,0,0,.18);
+  display: flex; justify-content: space-between; align-items: center; gap: 8px; text-align: left; min-height: 44px;
+}
+button.blk { cursor: pointer; width: 100%; font-weight: 500; }
+button.blk:hover { filter: brightness(0.95); }
+.blk .plus { font-family: var(--f-body); font-weight: 700; }
+.blk.evento { background: var(--blk-evento); border-radius: 16px 16px 8px 8px; }
+.blk.control { background: var(--blk-control); }
+.blk.variable { background: var(--blk-variable); }
+.blk.apariencia { background: var(--blk-apariencia); }
+.program { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.program li.inside { margin-left: 26px; position: relative; }
+.program li.inside::before { content: ""; position: absolute; left: -16px; top: -6px; bottom: -6px; width: 6px; background: var(--blk-control); border-radius: 3px; }
+.program .ctl { display: flex; gap: 3px; flex: none; }
+.program .ctl button { font: inherit; font-size: 0.9em; background: rgba(255,255,255,.55); color: var(--blk-ink); border: 1px solid rgba(0,0,0,.25); border-radius: 6px; width: 34px; height: 34px; cursor: pointer; }
+.empty { color: var(--ink-soft); font-style: italic; }
+.turnos { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; background: var(--ink); color: var(--paper); border-radius: 12px; padding: 12px 16px; }
+.turnos .big { font-family: var(--f-code); font-size: 2.6em; line-height: 1; min-width: 2.2ch; text-align: center; color: var(--marker); }
+.turnos .log { font-family: var(--f-code); font-size: 0.85em; min-width: 0; overflow-wrap: anywhere; }
+
+/* Retroalimentación */
+.fb { border-radius: 10px; padding: 12px 14px; border-left: 6px solid; }
+.fb.ok { background: var(--ok-bg); border-color: var(--ok); }
+.fb.no { background: var(--bad-bg); border-color: var(--bad); }
+.fb.info { background: var(--pen-soft); border-color: var(--pen); }
+.fb strong { display: block; margin-bottom: 2px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Preguntas */
+.quiz { display: grid; gap: 14px; }
+fieldset { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px 14px; margin: 0; display: grid; gap: 8px; min-width: 0; }
+legend { font-weight: 700; padding: 0 6px; }
+.opt { display: flex; gap: 10px; align-items: flex-start; padding: 6px 8px; border-radius: 8px; cursor: pointer; }
+.opt:hover { background: var(--pen-soft); }
+.opt input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--pen); flex: none; }
+
+/* Scratch */
+.scratch { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; border: 2px dashed var(--pen); border-radius: 12px; padding: 14px 16px; }
+
+textarea { font: inherit; width: 100%; min-height: 120px; padding: 10px; border-radius: 10px; border: 2px solid var(--ink-soft); background: var(--sheet); color: var(--ink); }
+
+.nav-bottom { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 18px; }
+.done-banner { display: flex; gap: 12px; align-items: center; }
+
+footer { font-size: 0.85em; color: var(--ink-soft); display: grid; gap: 6px; }
+footer p { max-width: 75ch; }
+.rights { border-top: 1px solid var(--line); padding-top: 10px; margin-top: 4px; display: grid; gap: 4px; }
+.rights strong { color: var(--ink); }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 760px) {
+  .problem { grid-template-columns: 1fr; }
+  .route { grid-template-columns: 1fr 1fr; }
+  .editor { grid-template-columns: 1fr; }
+  .cls-row { grid-template-columns: 1fr; }
+  .scratch { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pop { animation: pop .35s ease-out; }
+  @keyframes pop { from { transform: scale(.85); opacity: .4; } to { transform: none; opacity: 1; } }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg viewBox="0 0 44 44" role="img" aria-label="Logo de TecnoPensantes: un bloque de programación con un foco">
+        <rect x="2" y="10" width="40" height="26" rx="6" fill="var(--blk-control)" stroke="var(--ink)" stroke-width="2"/>
+        <path d="M12 10 v-3 h8 v3" fill="var(--blk-control)" stroke="var(--ink)" stroke-width="2"/>
+        <circle cx="22" cy="23" r="7" fill="var(--marker)" stroke="var(--ink)" stroke-width="2"/>
+        <path d="M19 31 h6" stroke="var(--ink)" stroke-width="2"/>
+      </svg>
+      <div>
+        <div class="brand-name">TecnoPensantes</div>
+        <div class="brand-sub">Tecnología e Informática · Grado 10°</div>
+      </div>
+    </div>
+    <div class="tools" role="group" aria-label="Tamaño del texto">
+      <span class="brand-sub">Texto</span>
+      <button class="btn small icon" id="txt-minus" type="button" aria-label="Reducir tamaño del texto">A−</button>
+      <button class="btn small icon" id="txt-plus" type="button" aria-label="Aumentar tamaño del texto">A+</button>
+    </div>
+  </header>
+
+  <section class="problem" aria-labelledby="problema-titulo">
+    <div>
+      <p class="eyebrow">El problema de esta unidad</p>
+      <h1 id="problema-titulo">La fila de la <mark>cafetería</mark> no avanza</h1>
+      <p class="lead">En el descanso, cientos de estudiantes llegan al mismo tiempo a una sola caja. No hay orden, algunos se cuelan y muchos vuelven a clase sin comer. Tu reto es diseñar un <strong>sistema de turnos</strong>: analizar el problema, escribir el algoritmo, programarlo por bloques y probarlo.</p>
+      <div class="facts" aria-label="Datos del problema">
+        <span class="fact">descanso: 30 min</span>
+        <span class="fact">1 caja</span>
+        <span class="fact">≈ 1 min por pedido</span>
+        <span class="fact">4 misiones · ≈ 4 h</span>
+      </div>
+    </div>
+    <div class="screen-card">
+      <svg viewBox="0 0 320 170" role="img" aria-labelledby="pant-t pant-d">
+        <title id="pant-t">Pantalla de turnos</title>
+        <desc id="pant-d">Ilustración de una pantalla que muestra el turno 27 y una fila de cinco estudiantes esperando frente a la caja.</desc>
+        <rect x="10" y="8" width="150" height="80" rx="10" fill="var(--ink)"/>
+        <text x="85" y="34" text-anchor="middle" font-family="var(--f-body)" font-size="13" fill="var(--paper)">TURNO</text>
+        <text x="85" y="74" text-anchor="middle" font-family="var(--f-code)" font-size="38" fill="var(--marker)">027</text>
+        <rect x="200" y="40" width="110" height="48" rx="8" fill="var(--pen-soft)" stroke="var(--pen)" stroke-width="2"/>
+        <text x="255" y="70" text-anchor="middle" font-family="var(--f-body)" font-size="14" font-weight="700" fill="var(--pen)">CAJA</text>
+        <g fill="var(--ink-soft)">
+          <circle cx="40" cy="125" r="9"/><rect x="31" y="136" width="18" height="24" rx="6"/>
+          <circle cx="85" cy="125" r="9"/><rect x="76" y="136" width="18" height="24" rx="6"/>
+          <circle cx="130" cy="125" r="9"/><rect x="121" y="136" width="18" height="24" rx="6"/>
+          <circle cx="175" cy="125" r="9"/><rect x="166" y="136" width="18" height="24" rx="6"/>
+        </g>
+        <circle cx="225" cy="125" r="9" fill="var(--pen)"/><rect x="216" y="136" width="18" height="24" rx="6" fill="var(--pen)"/>
+        <path d="M245 140 h40" stroke="var(--pen)" stroke-width="3" marker-end="url(#fl)"/>
+        <defs><marker id="fl" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="var(--pen)"/></marker></defs>
+      </svg>
+    </div>
+  </section>
+
+  <nav aria-label="Misiones">
+    <ol class="route" id="route"></ol>
+  </nav>
+
+  <main class="mission" id="mission" tabindex="-1" aria-live="polite"></main>
+
+  <footer>
+    <p><strong>Privacidad:</strong> este recurso no pide nombres ni datos personales y no tiene publicidad. Tu avance y tus respuestas se guardan solo en este navegador.</p>
+    <p>Competencias: solución de problemas con tecnología; apropiación y uso de la tecnología (MEN, Guía 30). Scratch es un proyecto del grupo Lifelong Kindergarten del MIT Media Lab.</p>
+    <div class="rights">
+      <p><strong>© 2026 Sergio Andrés Caro Arrieta.</strong> Estudiante de la Maestría en Recursos Digitales Aplicados a la Educación, Universidad de Cartagena, 2026.</p>
+      <p>Algunos derechos reservados. Esta obra está bajo una licencia <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank" rel="noopener">Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)</a>: puedes usarla y adaptarla citando al autor, sin fines comerciales y compartiendo tus versiones con la misma licencia. Protegida por la Ley 23 de 1982 y la Ley 1915 de 2018 sobre derechos de autor en Colombia.</p>
+      <p>Desarrollado con apoyo de inteligencia artificial generativa (Claude, Anthropic).</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  // ---------- almacenamiento local (opcional) ----------
+  const KEY = "tecnopensantes-v1";
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  const state = Object.assign({ scale: 1, m: {} }, load());
+  for (let i = 1; i <= 4; i++) state.m[i] = Object.assign({ act: false, quiz: [], seen: false }, state.m[i] || {});
+
+  // ---------- tamaño de texto ----------
+  function applyScale() { document.documentElement.style.setProperty("--scale", state.scale); }
+  applyScale();
+  document.getElementById("txt-plus").onclick = () => { state.scale = Math.min(1.5, +(state.scale + 0.1).toFixed(2)); applyScale(); save(); };
+  document.getElementById("txt-minus").onclick = () => { state.scale = Math.max(0.9, +(state.scale - 0.1).toFixed(2)); applyScale(); save(); };
+
+  const $ = (h) => { const t = document.createElement("template"); t.innerHTML = h.trim(); return t.content.firstElementChild; };
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  // ---------- contenido ----------
+  const M = {
+    1: {
+      name: "Analizar el problema", short: "Analiza",
+      goal: "Identificar las entradas, los procesos y las salidas de un sistema de turnos para la cafetería.",
+      time: "45 minutos",
+      steps: [
+        "Lee el problema de la cafetería en la parte superior.",
+        "Clasifica cada elemento como entrada, proceso o salida.",
+        "Pulsa «Revisar clasificación» y lee la explicación de cada elemento.",
+        "Responde las tres preguntas de verificación.",
+      ],
+      quiz: [
+        { q: "En el sistema de turnos, ¿cuál de estos elementos es una entrada?",
+          o: ["El estudiante que llega y pide un turno", "El número que aparece en la pantalla", "Sumar 1 al último turno entregado"], a: 0,
+          e: ["Correcto. Es un dato que llega al sistema desde afuera; sin él, el sistema no tiene nada que procesar.",
+              "No. El número en pantalla es lo que el sistema entrega: es una salida.",
+              "No. Sumar 1 es una operación que hace el sistema con los datos: es un proceso."] },
+        { q: "¿Qué necesidad resuelve el sistema de turnos?",
+          o: ["Que la cafetería venda productos más caros", "Que cada estudiante sea atendido en orden y sepa cuándo le toca", "Que los estudiantes no tengan que pagar"], a: 1,
+          e: ["No. El problema que analizamos es el desorden y la espera, no el precio.",
+              "Correcto. La tecnología busca resolver problemas y satisfacer necesidades: aquí la necesidad es orden y un tiempo de espera justo.",
+              "No. El pago sigue igual; el sistema organiza el orden de atención."] },
+        { q: "¿Por qué conviene analizar el problema antes de programar?",
+          o: ["Porque así el programa queda más largo", "Porque Scratch no funciona sin un análisis escrito", "Porque saber qué entra, qué se procesa y qué sale evita programar algo que no resuelve el problema"], a: 2,
+          e: ["No. Un programa más largo no es mejor; el análisis busca que sea correcto.",
+              "No. Scratch funciona sin análisis, pero el programa podría no servir para el problema real.",
+              "Correcto. El análisis define qué debe hacer la solución; programar es el último paso, no el primero."] },
+      ],
+    },
+    2: {
+      name: "Diseñar el algoritmo", short: "Diseña",
+      goal: "Ordenar los pasos de un algoritmo que llama los turnos en la pantalla de la cafetería.",
+      time: "45 minutos",
+      steps: [
+        "Lee los siete pasos del algoritmo. Están desordenados.",
+        "Usa las flechas ↑ y ↓ para moverlos hasta que el algoritmo tenga sentido.",
+        "Pulsa «Revisar orden». Los pasos en verde están en su lugar.",
+        "Responde las preguntas de verificación.",
+      ],
+      quiz: [
+        { q: "¿Qué es un algoritmo?",
+          o: ["Una secuencia ordenada y finita de pasos para resolver un problema", "Un programa escrito solo en Scratch", "Una lista de materiales para construir un aparato"], a: 0,
+          e: ["Correcto. Un algoritmo se puede escribir en palabras, en un diagrama o en bloques; lo importante es el orden y que termine.",
+              "No. Scratch es una forma de escribirlo, pero el algoritmo existe antes del lenguaje.",
+              "No. Una lista de materiales no dice qué hacer ni en qué orden."] },
+        { q: "El paso «Si el descanso no ha terminado, volver al paso 3» crea…",
+          o: ["Un error, porque el algoritmo nunca termina", "Un ciclo: los pasos 3 a 5 se repiten mientras dure el descanso", "Una entrada nueva"], a: 1,
+          e: ["No. Sí termina: cuando acaba el descanso, el algoritmo pasa al fin.",
+              "Correcto. Repetir pasos con una condición es un ciclo; en Scratch lo harás con un bloque de control.",
+              "No. Es una decisión que controla la repetición, no un dato que entra."] },
+        { q: "Si intercambias «Sumar 1 al contador» y «Mostrar el turno en la pantalla», ¿qué pasa?",
+          o: ["Nada, el orden de esos pasos no importa", "La pantalla se queda en blanco", "La pantalla muestra primero el 0 y siempre va un turno atrasada"], a: 2,
+          e: ["No. En un algoritmo el orden cambia el resultado.",
+              "No. La pantalla sí muestra un número, pero el equivocado.",
+              "Correcto. Si se muestra antes de sumar, se ve el valor anterior del contador: 0, 1, 2…"] },
+      ],
+    },
+    3: {
+      name: "Programar con bloques", short: "Programa",
+      goal: "Construir con bloques un programa que muestre los turnos 1, 2, 3, 4 y 5 cada vez que el cajero pide el siguiente.",
+      time: "1 hora y 30 minutos",
+      steps: [
+        "Mira el programa: ya tiene los dos primeros bloques.",
+        "Agrega bloques desde la paleta con el botón de cada uno. Los bloques que pongas después de «repetir 5 veces» quedan dentro del ciclo.",
+        "Ordena con ↑ ↓ y elimina con ✕ los que sobren.",
+        "Pulsa «Ejecutar» y compara la pantalla con lo esperado: 1, 2, 3, 4, 5.",
+        "Haz el reto en Scratch y responde las preguntas.",
+      ],
+      quiz: [
+        { q: "¿Para qué sirve el bloque «al hacer clic en ⚑»?",
+          o: ["Para que el programa empiece cuando ocurre un evento", "Para sumar 1 a una variable", "Para borrar el programa"], a: 0,
+          e: ["Correcto. Es un bloque de evento: sin él, los demás bloques no se ejecutan.",
+              "No. Sumar es tarea de un bloque de variables.",
+              "No. Ningún bloque de evento borra el programa."] },
+        { q: "¿Por qué «fijar turno a 0» va antes de «repetir 5 veces» y no dentro?",
+          o: ["Porque Scratch no permite variables dentro de un ciclo", "Porque dentro del ciclo reiniciaría el contador en cada vuelta y la pantalla siempre mostraría 1", "Porque así el programa es más rápido"], a: 1,
+          e: ["No. Las variables sí se pueden usar dentro de un ciclo.",
+              "Correcto. Inicializar se hace una sola vez; lo que va dentro del ciclo se repite.",
+              "No. La razón es el resultado, no la velocidad."] },
+        { q: "En el programa, «turno» es…",
+          o: ["Un evento", "Un bloque de apariencia", "Una variable: un espacio que guarda un valor que cambia"], a: 2,
+          e: ["No. Los eventos inician el programa; «turno» guarda un número.",
+              "No. La apariencia muestra cosas; «turno» guarda el dato que se muestra.",
+              "Correcto. Su valor pasa de 0 a 1, 2, 3… mientras corre el programa."] },
+      ],
+    },
+    4: {
+      name: "Probar y mejorar", short: "Prueba",
+      goal: "Encontrar y corregir un error en un programa, y pensar cómo afecta tu solución a toda la comunidad escolar.",
+      time: "1 hora",
+      steps: [
+        "Lee el programa que hizo un compañero y la queja del cajero.",
+        "Responde qué está fallando y cómo lo corregirías.",
+        "Escribe tu reflexión sobre quién podría quedar por fuera del sistema.",
+        "Comparte tu proyecto de Scratch con un compañero y prueben el de cada uno.",
+      ],
+      quiz: [
+        { q: "El programa del compañero muestra «1» en cada turno. ¿Cuál es la causa?",
+          o: ["Falta el bloque «al hacer clic en ⚑»", "«fijar turno a 0» está dentro del ciclo, así que el contador se reinicia en cada vuelta", "El ciclo debería repetir 10 veces"], a: 1,
+          e: ["No. El evento está; si faltara, el programa no mostraría nada.",
+              "Correcto. Cada vuelta pone el turno en 0 y luego suma 1: siempre 1. Hay que sacar ese bloque del ciclo.",
+              "No. Con 10 vueltas mostraría «1» diez veces."] },
+        { q: "¿Qué es depurar un programa?",
+          o: ["Borrarlo y empezar de nuevo", "Hacerlo más largo", "Probarlo, encontrar los errores y corregirlos"], a: 2,
+          e: ["No. Depurar es corregir lo que falla, no empezar desde cero.",
+              "No. La longitud no importa; importa que funcione.",
+              "Correcto. Probar con casos concretos es la forma de saber si el programa resuelve el problema."] },
+        { q: "Un estudiante con baja visión no alcanza a leer la pantalla de turnos. ¿Qué mejora lo incluye?",
+          o: ["Anunciar el turno también con sonido", "Usar letras más pequeñas para que quepan más números", "Quitar la pantalla"], a: 0,
+          e: ["Correcto. Dar la misma información por dos medios (imagen y sonido) hace que más personas puedan usar el sistema.",
+              "No. Las letras pequeñas lo excluyen todavía más.",
+              "No. Quitarla perjudica a quienes sí la usan; la idea es sumar formas de acceso."] },
+      ],
+    },
+  };
+
+  // ---------- estado de misiones ----------
+  function status(i) {
+    const m = state.m[i];
+    if (m.act && m.quiz.length === M[i].quiz.length) return "done";
+    if (m.seen || m.act || m.quiz.length) return "doing";
+    return "todo";
+  }
+  const STATUS_TXT = { done: "Completada", doing: "En curso", todo: "Pendiente" };
+
+  function renderRoute(cur) {
+    const r = document.getElementById("route");
+    r.innerHTML = "";
+    for (let i = 1; i <= 4; i++) {
+      const s = status(i);
+      r.appendChild($(`<li><a href="#mision-${i}" ${i === cur ? 'aria-current="step"' : ""}>
+        <span class="num">Misión ${i}</span><span class="name">${M[i].name}</span>
+        <span class="pill ${s}">${STATUS_TXT[s]}</span></a></li>`));
+    }
+  }
+
+  // ---------- preguntas ----------
+  function quizEl(i) {
+    const box = $(`<div class="block"><h3 class="section-title">Preguntas de verificación <small>Elige una respuesta y pulsa «Comprobar»</small></h3><div class="quiz"></div></div>`);
+    const qz = box.querySelector(".quiz");
+    M[i].quiz.forEach((it, qi) => {
+      const name = `m${i}q${qi}`;
+      const fs = $(`<fieldset><legend>${qi + 1}. ${esc(it.q)}</legend></fieldset>`);
+      it.o.forEach((op, oi) => fs.appendChild($(`<label class="opt"><input type="radio" name="${name}" id="${name}o${oi}" value="${oi}"><span>${esc(op)}</span></label>`)));
+      const act = $(`<div class="actions"><button class="btn small" type="button">Comprobar</button></div>`);
+      const fb = $(`<div aria-live="polite"></div>`);
+      act.querySelector("button").onclick = () => {
+        const sel = fs.querySelector("input:checked");
+        if (!sel) { fb.className = "fb info"; fb.innerHTML = "<strong>Falta tu respuesta</strong>Elige una opción antes de comprobar."; return; }
+        const oi = +sel.value, ok = oi === it.a;
+        fb.className = "fb pop " + (ok ? "ok" : "no");
+        fb.innerHTML = `<strong>${ok ? "¡Bien!" : "Todavía no."}</strong>${esc(it.e[oi])}${ok ? "" : " Vuelve a intentarlo."}`;
+        if (ok && !state.m[i].quiz.includes(qi)) { state.m[i].quiz.push(qi); save(); afterProgress(i); }
+      };
+      fs.appendChild(act); fs.appendChild(fb);
+      qz.appendChild(fs);
+    });
+    return box;
+  }
+
+  // ---------- Misión 1: clasificar ----------
+  const CLS = [
+    ["Cantidad de estudiantes que llegan a la fila", "entrada", "Es un dato que llega al sistema desde afuera."],
+    ["El cajero pulsa el botón «siguiente»", "entrada", "Es una acción externa que el sistema recibe; por eso es entrada, aunque la haga una persona del sistema."],
+    ["Calcular el número del siguiente turno", "proceso", "Es una operación que el sistema hace con los datos."],
+    ["Comparar si ya terminó el descanso", "proceso", "Comparar y decidir es trabajo interno del sistema."],
+    ["Número de turno que aparece en la pantalla", "salida", "Es el resultado que el sistema entrega a los estudiantes."],
+    ["Sonido que avisa el cambio de turno", "salida", "También es un resultado que el sistema entrega, por otro medio."],
+  ];
+  function m1() {
+    const b = $(`<div class="block"><h3 class="section-title">Actividad: entradas, procesos y salidas</h3>
+      <p>Un sistema tecnológico recibe <strong>entradas</strong>, las transforma con <strong>procesos</strong> y entrega <strong>salidas</strong>. Clasifica cada elemento del sistema de turnos.</p>
+      <div class="classify"></div><div class="actions"><button class="btn primary" type="button">Revisar clasificación</button></div><div aria-live="polite"></div></div>`);
+    const list = b.querySelector(".classify");
+    CLS.forEach(([t], k) => list.appendChild($(`<div class="cls-row"><label for="cls${k}">${esc(t)}</label>
+      <select id="cls${k}"><option value="">Elige…</option><option value="entrada">Entrada</option><option value="proceso">Proceso</option><option value="salida">Salida</option></select></div>`)));
+    const fb = b.lastElementChild;
+    b.querySelector(".btn").onclick = () => {
+      let good = 0;
+      [...list.children].forEach((row, k) => {
+        row.querySelector(".why")?.remove();
+        const v = row.querySelector("select").value, ok = v === CLS[k][1];
+        row.className = "cls-row " + (ok ? "good" : "wrong");
+        if (ok) good++;
+        row.appendChild($(`<p class="why">${ok ? "✓ " : "✗ "}${v ? (ok ? CLS[k][2] : `No es ${v}. Pista: ${CLS[k][2].replace(/^Es /, "piensa si es ")}`) : "Elige una opción."}</p>`));
+      });
+      const all = good === CLS.length;
+      fb.className = "fb pop " + (all ? "ok" : "no");
+      fb.innerHTML = all ? "<strong>Clasificación completa</strong>Ya tienes el análisis del sistema. Fíjate en que la misma salida (el turno) puede entregarse por dos medios: pantalla y sonido."
+                         : `<strong>${good} de ${CLS.length} correctas</strong>Lee la explicación de los elementos en rojo y vuelve a intentarlo.`;
+      if (all && !state.m[1].act) { state.m[1].act = true; save(); afterProgress(1); }
+    };
+    return b;
+  }
+
+  // ---------- Misión 2: ordenar ----------
+  const ALG = [
+    "Iniciar el sistema de turnos",
+    "Poner el contador de turnos en 0",
+    "Esperar a que el cajero pulse «siguiente»",
+    "Sumar 1 al contador",
+    "Mostrar el turno en la pantalla",
+    "Si el descanso no ha terminado, volver al paso 3",
+    "Fin",
+  ];
+  const START = [4, 0, 3, 6, 2, 5, 1];
+  function m2() {
+    let order = START.slice();
+    const b = $(`<div class="block"><h3 class="section-title">Actividad: ordena el algoritmo</h3>
+      <p>El cajero quiere llamar los turnos uno por uno. Organiza los pasos para que el sistema funcione durante todo el descanso.</p>
+      <ol class="order" aria-label="Pasos del algoritmo"></ol>
+      <div class="actions"><button class="btn primary" type="button" data-a="check">Revisar orden</button><button class="btn" type="button" data-a="reset">Volver a desordenar</button></div>
+      <div aria-live="polite"></div></div>`);
+    const ol = b.querySelector(".order"), fb = b.lastElementChild;
+    function draw(marks, focus) {
+      ol.innerHTML = "";
+      order.forEach((s, k) => {
+        const li = $(`<li class="${marks ? (marks[k] ? "good" : "wrong") : ""}"><span>${esc(ALG[s])}${marks ? (marks[k] ? " <span class='sr'>(en su lugar)</span>" : " <span class='sr'>(fuera de lugar)</span>") : ""}</span>
+          <span class="ctl"><button class="btn small icon" type="button" data-up="${k}" aria-label="Subir: ${esc(ALG[s])}" ${k === 0 ? "disabled" : ""}>↑</button>
+          <button class="btn small icon" type="button" data-down="${k}" aria-label="Bajar: ${esc(ALG[s])}" ${k === order.length - 1 ? "disabled" : ""}>↓</button></span></li>`);
+        ol.appendChild(li);
+      });
+      if (focus) ol.querySelector(focus)?.focus();
+    }
+    ol.onclick = (e) => {
+      const u = e.target.closest("[data-up]"), d = e.target.closest("[data-down]");
+      if (u) { const k = +u.dataset.up; [order[k - 1], order[k]] = [order[k], order[k - 1]]; draw(null, `[data-up="${k - 1}"]:not([disabled]), [data-down="${k - 1}"]`); }
+      if (d) { const k = +d.dataset.down; [order[k + 1], order[k]] = [order[k], order[k + 1]]; draw(null, `[data-down="${k + 1}"]:not([disabled]), [data-up="${k + 1}"]`); }
+      fb.className = ""; fb.innerHTML = "";
+    };
+    b.querySelector('[data-a="reset"]').onclick = () => { order = START.slice(); draw(); fb.className = ""; fb.innerHTML = ""; };
+    b.querySelector('[data-a="check"]').onclick = () => {
+      const marks = order.map((s, k) => s === k), good = marks.filter(Boolean).length;
+      draw(marks);
+      const pos = (s) => order.indexOf(s);
+      let hint = "";
+      if (pos(0) !== 0 || pos(6) !== 6) hint = "Un algoritmo empieza con «Iniciar» y termina con «Fin».";
+      else if (pos(1) > pos(2)) hint = "El contador se pone en 0 una sola vez, antes de empezar a llamar turnos.";
+      else if (pos(4) < pos(3)) hint = "Si se muestra el turno antes de sumar, la pantalla va un turno atrasada.";
+      else if (pos(2) > pos(3)) hint = "Primero se espera la orden del cajero; luego cambia el turno.";
+      else if (pos(5) !== 5) hint = "La decisión de repetir va después de mostrar el turno, al final del ciclo.";
+      const all = good === ALG.length;
+      fb.className = "fb pop " + (all ? "ok" : "no");
+      fb.innerHTML = all ? "<strong>Algoritmo correcto</strong>Los pasos 3, 4 y 5 forman un ciclo que se repite mientras dura el descanso. En la Misión 3 lo convertirás en bloques."
+                         : `<strong>${good} de ${ALG.length} pasos en su lugar</strong>${hint}`;
+      if (all && !state.m[2].act) { state.m[2].act = true; save(); afterProgress(2); }
+    };
+    draw();
+    return b;
+  }
+
+  // ---------- Misión 3: bloques ----------
+  const BL = {
+    flag: { t: "al hacer clic en ⚑", c: "evento" },
+    set0: { t: "fijar turno a 0", c: "variable" },
+    rep: { t: "repetir 5 veces", c: "control" },
+    key: { t: "esperar a que el cajero pulse «siguiente»", c: "control" },
+    add: { t: "sumar 1 a turno", c: "variable" },
+    say: { t: "mostrar turno en la pantalla", c: "apariencia" },
+  };
+  function m3() {
+    let prog = ["flag", "set0"];
+    let running = false;
+    const b = $(`<div class="block"><h3 class="section-title">Actividad: programa la pantalla de turnos</h3>
+      <div class="editor">
+        <div class="panel"><h3>Paleta de bloques</h3><div class="palette" style="display:grid;gap:6px"></div></div>
+        <div class="panel"><h3>Tu programa</h3><ol class="program" aria-label="Tu programa"></ol>
+          <div class="actions"><button class="btn primary" type="button" data-a="run">▶ Ejecutar</button><button class="btn" type="button" data-a="clear">Empezar de nuevo</button></div>
+          <div class="turnos" aria-label="Pantalla de turnos"><div class="big" aria-hidden="true">–</div><div class="log">Esperado: 1, 2, 3, 4, 5</div></div>
+        </div>
+      </div>
+      <div aria-live="polite" class="fbx"></div>
+      <div class="scratch"><div><strong>Reto en Scratch.</strong> Abre Scratch, crea una variable llamada <code>turno</code> y arma el mismo programa. Usa el bloque «al presionar tecla espacio» como el botón «siguiente» del cajero. Reto extra: anuncia cada turno también con sonido. Guarda el proyecto y compártelo con un compañero.</div>
+        <a class="btn primary" href="https://scratch.mit.edu/projects/editor/" target="_blank" rel="noopener">Abrir Scratch ↗</a></div>
+      </div>`);
+    const pal = b.querySelector(".palette"), ol = b.querySelector(".program"), fb = b.querySelector(".fbx");
+    const big = b.querySelector(".big"), log = b.querySelector(".log");
+    Object.entries(BL).forEach(([id, x]) => pal.appendChild($(`<button type="button" class="blk ${x.c}" data-add="${id}" aria-label="Agregar bloque: ${esc(x.t)}"><span>${esc(x.t)}</span><span class="plus" aria-hidden="true">+</span></button>`)));
+    function draw(focusSel) {
+      ol.innerHTML = "";
+      if (!prog.length) ol.appendChild($(`<li class="empty">El programa está vacío. Agrega bloques desde la paleta.</li>`));
+      const ri = prog.indexOf("rep");
+      prog.forEach((id, k) => {
+        const x = BL[id], inside = ri > -1 && k > ri;
+        ol.appendChild($(`<li class="${inside ? "inside" : ""}"><div class="blk ${x.c}"><span>${esc(x.t)}${inside ? '<span class="sr"> (dentro del ciclo)</span>' : ""}</span>
+          <span class="ctl"><button type="button" data-up="${k}" aria-label="Subir bloque ${esc(x.t)}" ${k === 0 ? "disabled" : ""}>↑</button><button type="button" data-down="${k}" aria-label="Bajar bloque ${esc(x.t)}" ${k === prog.length - 1 ? "disabled" : ""}>↓</button><button type="button" data-del="${k}" aria-label="Eliminar bloque ${esc(x.t)}">✕</button></span></div></li>`));
+      });
+      if (focusSel) ol.querySelector(focusSel)?.focus();
+    }
+    pal.onclick = (e) => { const a = e.target.closest("[data-add]"); if (!a || running) return; prog.push(a.dataset.add); draw(); };
+    ol.onclick = (e) => {
+      if (running) return;
+      const u = e.target.closest("[data-up]"), d = e.target.closest("[data-down]"), x = e.target.closest("[data-del]");
+      if (u) { const k = +u.dataset.up; [prog[k - 1], prog[k]] = [prog[k], prog[k - 1]]; draw(`[data-up="${k - 1}"]:not([disabled]), [data-down="${k - 1}"]`); }
+      if (d) { const k = +d.dataset.down; [prog[k + 1], prog[k]] = [prog[k], prog[k + 1]]; draw(`[data-down="${k + 1}"]:not([disabled]), [data-up="${k + 1}"]`); }
+      if (x) { prog.splice(+x.dataset.del, 1); draw(); }
+    };
+    b.querySelector('[data-a="clear"]').onclick = () => { if (running) return; prog = ["flag", "set0"]; draw(); big.textContent = "–"; log.textContent = "Esperado: 1, 2, 3, 4, 5"; fb.className = "fbx"; fb.innerHTML = ""; };
+
+    function say(cls, title, text) { fb.className = "fbx fb pop " + cls; fb.innerHTML = `<strong>${title}</strong>${text}`; }
+    b.querySelector('[data-a="run"]').onclick = async () => {
+      if (running) return;
+      if (prog[0] !== "flag") return say("no", "El programa no arranca", "Un programa de Scratch empieza con un bloque de evento. Pon «al hacer clic en ⚑» de primero.");
+      if (prog.filter((p) => p === "rep").length > 1) return say("no", "Hay dos ciclos", "Para este reto basta un solo «repetir 5 veces». Elimina el que sobra.");
+      if (prog.indexOf("flag", 1) > -1) return say("no", "Evento repetido", "El bloque «al hacer clic en ⚑» va una sola vez, al inicio.");
+      const ri = prog.indexOf("rep");
+      const pre = prog.slice(1, ri > -1 ? ri : undefined), body = ri > -1 ? prog.slice(ri + 1) : [];
+      let turno = 0; const out = []; let waits = 0;
+      const exec = (id) => { if (id === "set0") turno = 0; if (id === "add") turno++; if (id === "say") out.push(turno); if (id === "key") waits++; };
+      pre.forEach(exec);
+      for (let v = 0; v < 5; v++) body.forEach(exec);
+      // animación de la pantalla
+      running = true; fb.className = "fbx"; fb.innerHTML = "";
+      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      big.textContent = "–"; log.textContent = "Ejecutando…";
+      for (let k = 0; k < out.length; k++) {
+        big.textContent = out[k]; big.classList.remove("pop"); void big.offsetWidth; big.classList.add("pop");
+        log.textContent = "Pantalla: " + out.slice(0, k + 1).join(", ");
+        await new Promise((r) => setTimeout(r, reduce ? 120 : 550));
+      }
+      if (!out.length) { log.textContent = "La pantalla no mostró nada."; }
+      running = false;
+      const exp = "1,2,3,4,5", got = out.join(",");
+      if (got === exp && body.includes("key")) {
+        say("ok", "¡Funciona!", "La pantalla mostró 1, 2, 3, 4 y 5, y cada turno espera a que el cajero pulse «siguiente». Ahora hazlo en Scratch con el reto de abajo.");
+        if (!state.m[3].act) { state.m[3].act = true; save(); afterProgress(3); }
+      } else if (got === exp) say("info", "Casi", "Los números son correctos, pero salen todos seguidos. Agrega dentro del ciclo «esperar a que el cajero pulse «siguiente»» antes de sumar.");
+      else if (!out.length) say("no", "La pantalla quedó vacía", "Falta el bloque «mostrar turno en la pantalla», o está fuera del lugar donde se ejecuta.");
+      else if (ri === -1) say("no", "Solo se atendió un turno", "Sin un ciclo los bloques se ejecutan una vez. Agrega «repetir 5 veces» y pon dentro lo que se repite.");
+      else if (out.every((n) => n === 1) && body.includes("set0")) say("no", "Siempre muestra 1", "«fijar turno a 0» está dentro del ciclo: en cada vuelta el contador vuelve a 0. Súbelo para que quede antes de «repetir».");
+      else if (got === "0,1,2,3,4") say("no", "La pantalla va un turno atrasada", "Se muestra el turno antes de sumar. Dentro del ciclo, pon «sumar 1 a turno» antes de «mostrar turno».");
+      else if (out.every((n) => n === 0)) say("no", "Siempre muestra 0", "Falta «sumar 1 a turno» dentro del ciclo.");
+      else say("no", "La pantalla mostró " + out.join(", "), "Se esperaba 1, 2, 3, 4, 5. Revisa: fijar en 0 antes del ciclo; dentro del ciclo, esperar, sumar y mostrar, en ese orden.");
+    };
+    draw();
+    return b;
+  }
+
+  // ---------- Misión 4: depurar y reflexionar ----------
+  function m4() {
+    const b = $(`<div class="block"><h3 class="section-title">Actividad: encuentra el error</h3>
+      <p>Valentina armó este programa. El cajero se queja: <em>«La pantalla siempre dice 1, aunque ya atendí a cinco estudiantes».</em></p>
+      <ol class="program" aria-label="Programa con error" style="max-width:520px">
+        <li><div class="blk evento"><span>al hacer clic en ⚑</span></div></li>
+        <li><div class="blk control"><span>repetir 5 veces</span></div></li>
+        <li class="inside"><div class="blk control"><span>esperar a que el cajero pulse «siguiente» <span class="sr">(dentro del ciclo)</span></span></div></li>
+        <li class="inside"><div class="blk variable"><span>fijar turno a 0 <span class="sr">(dentro del ciclo)</span></span></div></li>
+        <li class="inside"><div class="blk variable"><span>sumar 1 a turno <span class="sr">(dentro del ciclo)</span></span></div></li>
+        <li class="inside"><div class="blk apariencia"><span>mostrar turno en la pantalla <span class="sr">(dentro del ciclo)</span></span></div></li>
+      </ol>
+      <p>Responde la primera pregunta de verificación para explicar el error. Luego escribe tu reflexión.</p>
+      <h3 class="section-title">Reflexión: tecnología y comunidad</h3>
+      <label for="refl">¿Qué estudiantes podrían tener dificultades con el sistema de turnos (por ejemplo, por discapacidad, idioma o porque no tienen celular) y qué cambiarías para incluirlos? Escribe al menos tres líneas.</label>
+      <textarea id="refl" placeholder="Por ejemplo: un estudiante que no oye bien no escucharía el aviso, por eso…"></textarea>
+      <div class="actions"><button class="btn primary" type="button">Guardar reflexión</button></div>
+      <div aria-live="polite"></div></div>`);
+    const ta = b.querySelector("textarea"), fb = b.lastElementChild;
+    ta.value = state.refl || "";
+    ta.oninput = () => { state.refl = ta.value; save(); };
+    b.querySelector(".btn").onclick = () => {
+      const words = ta.value.trim().split(/\s+/).filter(Boolean).length;
+      if (words < 25) { fb.className = "fb pop no"; fb.innerHTML = `<strong>Desarrolla un poco más</strong>Llevas ${words} palabras. Nombra a quién afecta, por qué y qué cambio propones (al menos 25 palabras).`; return; }
+      fb.className = "fb pop ok"; fb.innerHTML = "<strong>Reflexión guardada en este navegador</strong>Compártela con tu grupo en la socialización de la clase. Buenas soluciones tecnológicas piensan en todas las personas que las usan.";
+      if (!state.m[4].act) { state.m[4].act = true; save(); afterProgress(4); }
+    };
+    return b;
+  }
+
+  // ---------- vista ----------
+  const BUILD = { 1: m1, 2: m2, 3: m3, 4: m4 };
+  let current = 1;
+  function doneBanner(i) {
+    if (status(i) !== "done") return null;
+    return $(`<div class="fb ok done-banner"><span aria-hidden="true" style="font-size:1.6em">★</span><div><strong>Misión ${i} completada</strong>${i < 4 ? "Puedes repasar o seguir con la siguiente misión." : "Terminaste las cuatro misiones. Comparte tu proyecto de Scratch y tu reflexión con tu grupo."}</div></div>`);
+  }
+  function afterProgress(i) {
+    renderRoute(current);
+    const holder = document.getElementById("banner");
+    if (holder) { holder.innerHTML = ""; const d = doneBanner(i); if (d) holder.appendChild(d); }
+  }
+  function show(i, focus) {
+    current = i; state.m[i].seen = true; save();
+    const x = M[i], el = document.getElementById("mission");
+    el.innerHTML = "";
+    el.appendChild($(`<div class="m-head"><p class="eyebrow">Misión ${i} de 4 · ${x.time}</p><h2>${x.name}</h2></div>`));
+    el.appendChild($(`<dl class="goal"><dt>Objetivo</dt><dd>${esc(x.goal)}</dd><dt>Evidencia</dt><dd>${["Clasificación revisada y tres preguntas correctas.", "Algoritmo ordenado y tres preguntas correctas.", "Programa que muestra 1 a 5 esperando al cajero, proyecto en Scratch y tres preguntas correctas.", "Error explicado, reflexión escrita y tres preguntas correctas."][i - 1]}</dd></dl>`));
+    const st = $(`<div class="block"><h3 class="section-title">Cómo trabajar esta misión</h3><ol class="steps"></ol></div>`);
+    x.steps.forEach((s) => st.querySelector("ol").appendChild($(`<li>${esc(s)}</li>`)));
+    el.appendChild(st);
+    el.appendChild(BUILD[i]());
+    el.appendChild(quizEl(i));
+    const ban = $(`<div id="banner"></div>`); const d = doneBanner(i); if (d) ban.appendChild(d); el.appendChild(ban);
+    el.appendChild($(`<div class="nav-bottom">${i > 1 ? `<a class="btn" href="#mision-${i - 1}">← Misión ${i - 1}: ${M[i - 1].short}</a>` : "<span></span>"}${i < 4 ? `<a class="btn primary" href="#mision-${i + 1}">Misión ${i + 1}: ${M[i + 1].short} →</a>` : ""}</div>`));
+    renderRoute(i);
+    if (focus) el.focus({ preventScroll: false });
+  }
+  function route(focus) {
+    const m = /^#mision-([1-4])$/.exec(location.hash);
+    show(m ? +m[1] : 1, focus && !!m);
+  }
+  window.addEventListener("hashchange", () => route(true));
+  route(false);
+})();
+</script>
+
+</body>
+</html>
